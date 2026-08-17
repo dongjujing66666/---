@@ -4,6 +4,7 @@ import {
   assets,
   education,
   interactiveProjects,
+  landingProjects,
   personalAdvantagesRefined,
   profile,
   projects,
