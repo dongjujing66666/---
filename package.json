@@ -1,0 +1,9 @@
+{
+  "name": "dong-jujuing-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview", "render:pdf": "python scripts/render_project_pdfs.py" },
+  "dependencies": { "@vitejs/plugin-react": "latest", "vite": "latest", "react": "latest", "react-dom": "latest" },
+  "devDependencies": {}
+}
