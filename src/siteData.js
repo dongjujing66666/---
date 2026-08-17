@@ -1,11 +1,13 @@
 const projectFiles = import.meta.glob('../[0-9]*/*.{png,jpg,jpeg,JPG,JPEG,PNG}', {
   eager: true,
-  as: 'url',
+  query: '?url',
+  import: 'default',
 })
 
 const renderedPdfPageFiles = import.meta.glob('../[0-9]*/web-pdf-pages/*.{jpg,jpeg,JPG,JPEG}', {
   eager: true,
-  as: 'url',
+  query: '?url',
+  import: 'default',
 })
 
 const imageExtensions = new Set(['png', 'jpg', 'jpeg'])
