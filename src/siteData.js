@@ -10,6 +10,12 @@ const renderedPdfPageFiles = import.meta.glob('../[0-9]*/web-pdf-pages/*.{jpg,jp
   import: 'default',
 })
 
+const optimizedCoverFiles = import.meta.glob('./project-covers/*.{jpg,jpeg,JPG,JPEG}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
+
 const imageExtensions = new Set(['png', 'jpg', 'jpeg'])
 const detailExtensions = new Set(['jpg', 'jpeg'])
 
@@ -95,6 +101,10 @@ const records = Object.entries(projectFiles)
   .map(toAssetRecord)
   .filter(Boolean)
 
+const optimizedCoverUrls = new Map(
+  Object.entries(optimizedCoverFiles).map(([path, url]) => [path.match(/(\d+)(?=\.[^.]+$)/)?.[1], url]),
+)
+
 const pdfPagesByFolder = new Map()
 
 Object.entries(renderedPdfPageFiles).forEach(([path, url]) => {
@@ -158,10 +168,11 @@ export const projects = [...groupedProjects.values()]
       .sort((a, b) => a.fileName.localeCompare(b.fileName, 'zh-CN'))
     const renderedPdfPages = pdfPagesByFolder.get(project.folderName) || []
     const detailFiles = [...renderedPdfPages, ...imageDetailFiles]
+    const optimizedCoverUrl = optimizedCoverUrls.get(String(project.order).padStart(2, '0'))
 
     return {
       ...project,
-      cover,
+      cover: optimizedCoverUrl ? { ...cover, url: optimizedCoverUrl } : cover,
       detailFiles,
       hasHeader: Boolean(cover?.isHeader),
       tag: getTag(project.title),
