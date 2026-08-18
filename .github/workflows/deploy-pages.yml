@@ -18,8 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Fetch current portfolio from Gitee
+        run: git clone --depth 1 https://gitee.com/dongjujing666666/djj.git source
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -31,11 +31,14 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          cache-dependency-path: source/pnpm-lock.yaml
 
       - name: Install dependencies
+        working-directory: source
         run: pnpm install --frozen-lockfile
 
       - name: Build
+        working-directory: source
         run: pnpm run build
 
       - name: Configure Pages
@@ -44,7 +47,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./source/dist
 
   deploy:
     environment:
